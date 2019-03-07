@@ -1,0 +1,102 @@
+resources:
+- repo: self
+  clean: true
+  fetchDepth: 1
+
+jobs:
+
+- job: Job_1
+  displayName: Build And Scan Admin Image
+  condition: succeeded()
+  pool:
+    name: MTC LIVE
+  variables:
+    azureSubscription:
+    containerRegistryUrl:
+
+  steps:
+  - task: Docker@1
+    displayName: 'Build Admin Image'
+    inputs:
+      azureSubscriptionEndpoint: '$(azureSubscription)'
+      azureContainerRegistry: '$(containerRegistryUrl)'
+      dockerFile: admin/Dockerfile
+      imageName: 'mtc-admin-security-scan:$(Build.BuildNumber)'
+      addDefaultLabels: false
+
+  - bash: 'snyk test --docker mtc-admin-security-scan:$(Build.BuildNumber) --file=./Dockerfile'
+    workingDirectory: admin
+    displayName: 'Scan admin image'
+
+
+- job: Job_2
+  displayName: Build And Scan Assets Image
+  condition: succeeded()
+  pool:
+    name: MTC LIVE
+  variables:
+    azureSubscription: 'MTC EE Dev'
+    containerRegistryUrl: 'devcrmtc.azurecr.io'
+
+  steps:
+  - task: Docker@1
+    displayName: 'Build Assets Image'
+    inputs:
+      azureSubscriptionEndpoint: '$(azureSubscription)'
+      azureContainerRegistry: '$(containerRegistryUrl)'
+      dockerFile: 'admin-assets/Dockerfile'
+      imageName: 'mtc-assets-security-scan:$(Build.BuildNumber)'
+      addDefaultLabels: false
+
+  - bash: 'snyk test --docker mtc-assets-security-scan:$(Build.BuildNumber) --file=./Dockerfile'
+    workingDirectory: 'admin-assets'
+    displayName: 'Scan assets image'
+
+
+- job: Job_3
+  displayName: Build And Scan Auth Image
+  condition: succeeded()
+  pool:
+    name: MTC LIVE
+  variables:
+    azureSubscription: 'MTC EE Dev'
+    containerRegistryUrl: 'devcrmtc.azurecr.io'
+
+  steps:
+  - task: Docker@1
+    displayName: 'Build auth Image'
+    inputs:
+      azureSubscriptionEndpoint: '$(azureSubscription)'
+      azureContainerRegistry: '$(containerRegistryUrl)'
+      dockerFile: 'pupil-api/Dockerfile'
+      imageName: 'mtc-auth-security-scan:$(Build.BuildNumber)'
+      addDefaultLabels: false
+
+  - bash: 'snyk test --docker mtc-auth-security-scan:$(Build.BuildNumber) --file=./Dockerfile'
+    workingDirectory: 'pupil-api'
+    displayName: 'Scan auth image'
+
+
+- job: Job_4
+  displayName: Build And Scan Pupil Image
+  condition: succeeded()
+  pool:
+    name: MTC LIVE
+  variables:
+    azureSubscription: 'MTC EE Dev'
+    containerRegistryUrl: 'devcrmtc.azurecr.io'
+
+  steps:
+  - task: Docker@1
+    displayName: 'Build pupil Image'
+    inputs:
+      azureSubscriptionEndpoint: '$(azureSubscription)'
+      azureContainerRegistry: '$(containerRegistryUrl)'
+      dockerFile: 'pupil-spa/Dockerfile'
+      imageName: 'mtc-pupil-security-scan:$(Build.BuildNumber)'
+      addDefaultLabels: false
+
+  - bash: 'snyk test --docker mtc-pupil-security-scan:$(Build.BuildNumber) --file=./Dockerfile'
+    workingDirectory: 'pupil-spa'
+    displayName: 'Scan pupil image'
+
