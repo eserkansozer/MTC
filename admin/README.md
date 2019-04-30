@@ -115,6 +115,8 @@ We use postgrator to run database migrations.
 
 ### Parse school changes from CSV
 
+This will parse `OLD_dfeNumber`, `dfeNumber`, `estabCode`, `leaCode` and `name` from a supplied CSV file.
+For any schools found via `school.dfeNumber=OLD_dfeNumber`: `dfeNumber`, `estabCode`, `leaCode` and `name` will be updated.
 ```
 yarn parse-school-changes-csv PATH_TO_CSV
 ```
