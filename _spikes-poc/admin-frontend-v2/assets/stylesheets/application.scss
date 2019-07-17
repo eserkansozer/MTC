@@ -1,0 +1,52 @@
+// application.scss
+
+$govuk-global-styles: true;
+
+@import '../../node_modules/govuk-frontend/all';
+
+// main
+
+body {
+   font-family:"nta",Arial,sans-serif;
+   font-weight:400;
+   text-transform:none;
+   font-size:16px;
+   line-height:1.25;
+   -webkit-font-smoothing:antialiased;
+}
+
+
+// Sidebar
+
+.support-column {
+  border-top: 10px solid #005ea5;
+  padding-top: 10px;
+
+  ul {
+    list-style: none;
+  }
+
+  h2, h3, h4 {
+    margin-top: 0.3em;
+    margin-bottom: 0.5em;
+  }
+}
+
+
+//signed-in-as
+
+.signed-in-as {
+  font-size: medium;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  margin-right: 20px;
+  float: right
+}
+
+#sign-out {
+  font-size: medium;
+  text-decoration: none;
+  float: right;
+  padding-top: 10px;
+  padding-bottom: 15px
+}
