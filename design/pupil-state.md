@@ -28,6 +28,14 @@ parts of the codebase/user journey process will need refactoring to support the 
 - restart requested: when teacher creates restart we set `pupil.restartAvailable` to `true` and `pupil.currentCheckId` to `NULL`, indicating that a pin can now be generated for this pupil.
 - attendance set: when teacher marks pupil as not attending we set `pupil.attendanceId` to the `pupilRestart.id` of the newly created pupil attendance record.
 
+## components/views that will require refactoring
+
+many parts of the solution need to determine the current pupil status and will require refactoring to support the changes:
+
+- pupil status page: the 2019 pupil register is being split into two, with the status functionality residing in the pupil status page.
+- restarts page: determining who is eligible for a restart
+- pin generation: determining who is eligible for pin & check generation
+
 ## check expiry & restart counts
 
 the expiry service runs out of school hours to expire checks that appear to not have been used, submitted or received.
